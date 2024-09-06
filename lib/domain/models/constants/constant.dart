@@ -1,0 +1,4 @@
+class Constant {
+  static const apiKey =
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNjA4M2FlMzVmZDU0ZGRiYmNmYzY2NzIzNTliNGZhNCIsIm5iZiI6MTcyNTU1MDE0MS4xNjYwNDEsInN1YiI6IjY2ZDk5YzdiMmNlMjYwMDMzNThmMjk5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.E2d6JgCFBrellhMxLxr6x-ok4SGqbNT4xetQpVDQJ4A';
+}
