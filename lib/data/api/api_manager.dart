@@ -6,7 +6,7 @@ import 'package:movies_app/domain/models/customException/custom_exception.dart';
 import 'package:movies_app/domain/models/dtos/genre_list_dto.dart';
 import 'package:movies_app/domain/models/dtos/movies_response_dto.dart';
 import 'package:movies_app/domain/models/genre_list/genre_list.dart';
-import 'package:movies_app/domain/models/popular_movies_response.dart';
+import 'package:movies_app/domain/models/movies_response.dart';
 
 class ApiManager {
   static const String baseUrl = 'api.themoviedb.org';
@@ -92,7 +92,6 @@ class ApiManager {
     }
   }
 
-
   Future<MovieResponse> getTopRatedMovies() async {
     late Response response;
     try {
@@ -114,6 +113,34 @@ class ApiManager {
             statusCode: nowPlayingResponse.statusCode);
       }
       return nowPlayingResponse;
+    } on ServerErrorException catch (e) {
+      throw ServerErrorException(errorMessage: e.errorMessage);
+    } on Exception catch (e) {
+      throw ServerErrorException(errorMessage: e.toString());
+    }
+  }
+
+  Future<MovieResponse> getMoreLikeThis(int movieId) async {
+    late Response response;
+    try {
+      var url = Uri.https(
+        baseUrl,
+        '/3/movie/$movieId/recommendations',
+        {
+          'language': 'en-US',
+          'page': '1',
+        },
+      );
+      response = await client.get(url, headers: {
+        'Authorization': Constant.apiKey,
+      });
+      var moreLikeThisResponse = MovieResponse.fromJson(response.body);
+      if (moreLikeThisResponse.success == false) {
+        throw ServerErrorException(
+            errorMessage: moreLikeThisResponse.statusMessage!,
+            statusCode: moreLikeThisResponse.statusCode);
+      }
+      return moreLikeThisResponse;
     } on ServerErrorException catch (e) {
       throw ServerErrorException(errorMessage: e.errorMessage);
     } on Exception catch (e) {

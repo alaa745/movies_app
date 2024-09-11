@@ -1,6 +1,5 @@
 import 'package:movies_app/data/api/api_manager.dart';
 import 'package:movies_app/domain/datasource/movies_datasource.dart';
-import 'package:movies_app/domain/models/dtos/now_playing_movies_response_dto.dart';
 import 'package:movies_app/domain/models/dtos/movies_response_dto.dart';
 
 class MoviesDatasourceImpl implements MoviesDatasource {
@@ -25,6 +24,13 @@ class MoviesDatasourceImpl implements MoviesDatasource {
   @override
   Future<MoviesResponseDto> getTopRatedMovies() async {
     var response = await apiManager.getTopRatedMovies();
+
+    return response.toDto();
+  }
+
+  @override
+  Future<MoviesResponseDto> getMoreLikeThis(int movieId) async {
+    var response = await apiManager.getMoreLikeThis(movieId);
 
     return response.toDto();
   }

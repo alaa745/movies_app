@@ -3,6 +3,8 @@ import 'package:movies_app/data/api/api_manager.dart';
 import 'package:movies_app/domain/models/customException/custom_exception.dart';
 import 'package:movies_app/domain/models/dtos/genre_list_dto.dart';
 import 'package:movies_app/presentation/home_screen/home_screen.dart';
+import 'package:movies_app/presentation/home_screen/home_tab.dart';
+import 'package:movies_app/presentation/home_screen/home_screen_arguments.dart';
 import 'package:movies_app/presentation/utils/dialog_utils.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await getGenreList();
-      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      Navigator.pushReplacementNamed(
+        context,
+        HomeScreen.routeName,
+        arguments: HomeScreenArguments(genreListDto: genreListDto!),
+      );
     });
   }
 

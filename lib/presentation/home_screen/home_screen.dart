@@ -1,286 +1,105 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/domain/models/dtos/result_dto.dart';
-import 'package:movies_app/presentation/component/popular_movie_poster.dart';
-import 'package:movies_app/presentation/component/poster_card_shimmer.dart';
-import 'package:movies_app/presentation/component/poster_card_vertical.dart';
-import 'package:movies_app/presentation/component/poster_cover_shimmer_card.dart';
-import 'package:movies_app/presentation/component/top_rated_card.dart';
-import 'package:movies_app/presentation/home_screen/home_screen_viewmodel.dart';
-import 'package:movies_app/presentation/utils/dialog_utils.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:movies_app/presentation/home_screen/home_tab.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = 'HomeScreen';
+  static const String routeName = 'Home';
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var isPopularLoading = true,
-      isNowPlayingLoading = true,
-      isTopRatedLoading = true;
-  HomeScreenViewmodel? viewmodel;
-  List<MovieResultDto>? popularMoviesList;
-  List<MovieResultDto>? nowPlayingMoviesList;
-  List<MovieResultDto>? topRatedMoviesList;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    viewmodel = HomeScreenViewmodel();
-  }
-
+  var selectedIndex = 0;
+  var isSelected = false, isAddSelected = false;
+  var tabs = [HomeTab()];
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer(
-      bloc: viewmodel!..getPopularMovies(),
-      listener: (BuildContext context, Object? state) {
-        if (state is GetPopularMoviesLoadingState) {
-          print('loadiiiiiing');
-          isPopularLoading = true;
-        } else if (state is GetPopularMoviesFailState) {
-          print('status code ${state.statusCode}');
-          if (Platform.isIOS) {
-            DialogUtils.showDialogIos(
-                alertMsg: 'Fail',
-                alertContent: state.failMessage,
-                statusCode: state.statusCode,
-                // onAction: () {
-                //   Navigator.pop(context);
-                //   Navigator.pushReplacementNamed(context, 'Login',
-                //       arguments: LoginScreenArguments(args!.countriesFlagsDto));
-                // },
-                context: context);
-          } else {
-            DialogUtils.showDialogAndroid(
-                alertMsg: 'Fail',
-                alertContent: state.failMessage,
-                // onAction: () {
-                //   Navigator.pop(context);
-                //   Navigator.pushReplacementNamed(context, 'Login',
-                //       arguments: LoginScreenArguments(args!.countriesFlagsDto));
-                // },
-                statusCode: state.statusCode,
-                context: context);
-          }
-        }
+    // args = ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;
 
-        if (state is GetNowPlayingMoviesLoadingState) {
-          isNowPlayingLoading = true;
-        } else if (state is GetNowPlayingMoviesFailState) {
-          print('status code ${state.statusCode}');
-          if (Platform.isIOS) {
-            DialogUtils.showDialogIos(
-                alertMsg: 'Fail',
-                alertContent: state.failMessage,
-                statusCode: state.statusCode,
-                // onAction: () {
-                //   Navigator.pop(context);
-                //   Navigator.pushReplacementNamed(context, 'Login',
-                //       arguments: LoginScreenArguments(args!.countriesFlagsDto));
-                // },
-                context: context);
-          } else {
-            DialogUtils.showDialogAndroid(
-                alertMsg: 'Fail',
-                alertContent: state.failMessage,
-                // onAction: () {
-                //   Navigator.pop(context);
-                //   Navigator.pushReplacementNamed(context, 'Login',
-                //       arguments: LoginScreenArguments(args!.countriesFlagsDto));
-                // },
-                statusCode: state.statusCode,
-                context: context);
-          }
-        }
-
-        if (state is GetTopRatedMoviesLoadingState) {
-          isTopRatedLoading = true;
-        } else if (state is GetTopRatedMoviesFailState) {
-          print('status code ${state.statusCode}');
-          if (Platform.isIOS) {
-            DialogUtils.showDialogIos(
-                alertMsg: 'Fail',
-                alertContent: state.failMessage,
-                statusCode: state.statusCode,
-                // onAction: () {
-                //   Navigator.pop(context);
-                //   Navigator.pushReplacementNamed(context, 'Login',
-                //       arguments: LoginScreenArguments(args!.countriesFlagsDto));
-                // },
-                context: context);
-          } else {
-            DialogUtils.showDialogAndroid(
-                alertMsg: 'Fail',
-                alertContent: state.failMessage,
-                // onAction: () {
-                //   Navigator.pop(context);
-                //   Navigator.pushReplacementNamed(context, 'Login',
-                //       arguments: LoginScreenArguments(args!.countriesFlagsDto));
-                // },
-                statusCode: state.statusCode,
-                context: context);
-          }
-        }
-      },
-      listenWhen: (previous, current) {
-        if (current is GetPopularMoviesLoadingState ||
-            current is GetPopularMoviesFailState ||
-            current is GetNowPlayingMoviesLoadingState ||
-            current is GetNowPlayingMoviesFailState ||
-            current is GetTopRatedMoviesFailState ||
-            current is GetTopRatedMoviesLoadingState) {
-          return true;
-        }
-        if (previous is GetPopularMoviesLoadingState) {
-          isPopularLoading = false;
-        }
-        if (previous is GetNowPlayingMoviesLoadingState) {
-          isNowPlayingLoading = false;
-        }
-        if (previous is GetTopRatedMoviesLoadingState) {
-          isTopRatedLoading = false;
-        }
-        return false;
-      },
-      builder: (BuildContext context, state) {
-        if (state is GetPopularMoviesSuccessState) {
-          popularMoviesList = state.popularMoviesList;
-          print('moviesss ${popularMoviesList!.first.backdropPath}');
-          isPopularLoading = false;
-          viewmodel?.getNowPlayingMovies();
-        }
-        if (state is GetNowPlayingMoviesSuccessState) {
-          nowPlayingMoviesList = state.nowPlayingMoviesList;
-          isNowPlayingLoading = false;
-          viewmodel?.getTopRatedMovies();
-          // print('moviesss ${popularMoviesList!.first.backdropPath}');
-          // isLoading = false;
-        }
-        if (state is GetTopRatedMoviesSuccessState) {
-          topRatedMoviesList = state.topRatedMovies;
-          isTopRatedLoading = false;
-        }
-        return Scaffold(
-          backgroundColor: Color(0xFF121312),
-          body: SafeArea(
-            child: Column(
-              children: [
-                isPopularLoading
-                    ? PosterCoverShimmerCard()
-                    : PopularMoviePoster(
-                        avgRating: popularMoviesList!.first.voteAverage!,
-                        posterPath: popularMoviesList!.first.posterPath!,
-                        releaseDate: popularMoviesList!.first.releaseDate!,
-                        coverPath: popularMoviesList!.first.backdropPath!,
-                        title: popularMoviesList!.first.title!,
-                      ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  color: Color(0xFF282A28),
-                  width: MediaQuery.sizeOf(context).width,
-                  // height: 230,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Text(
-                          'Now Playing',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        height: 180,
-                        child: isNowPlayingLoading
-                            ? ListView.builder(
-                                itemCount: 5,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) =>
-                                    ShimmerPosterCardVertical(),
-                              )
-                            : ListView.builder(
-                                itemCount: nowPlayingMoviesList?.length,
-                                padding: EdgeInsets.only(left: 10, right: 20),
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => Container(
-                                  margin: EdgeInsets.only(right: 10),
-                                  child: PosterCardVertical(
-                                      height: 170,
-                                      // iconWidth: 20,
-                                      imagePath: nowPlayingMoviesList![index]
-                                          .posterPath!),
-                                ),
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  color: Color(0xFF282A28),
-                  width: MediaQuery.sizeOf(context).width,
-                  // height: 230,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Text(
-                          'Recommended',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        height: 220,
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: isTopRatedLoading
-                            ? ListView.builder(
-                                itemCount: 5,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) =>
-                                    ShimmerPosterCardVertical(),
-                              )
-                            : ListView.builder(
-                                itemCount: topRatedMoviesList?.length,
-                                padding: EdgeInsets.only(left: 10, right: 20),
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => Container(
-                                  margin:
-                                      EdgeInsets.only(right: 10, bottom: 10),
-                                  child: TopRatedCard(
-                                      // height: 170,
-                                      // iconWidth: 20,
-                                      advgRating: topRatedMoviesList![index]
-                                          .voteAverage!,
-                                      date: topRatedMoviesList![index]
-                                          .releaseDate!,
-                                      title: topRatedMoviesList![index].title!,
-                                      imagePath: topRatedMoviesList![index]
-                                          .posterPath!),
-                                ),
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //       systemNavigationBarColor: Colors.white,
+    //       statusBarColor: Colors.transparent,
+    //       statusBarIconBrightness: Brightness.dark),
+    // );
+    return Scaffold(
+        body: tabs[selectedIndex],
+        bottomNavigationBar: NavigationBar(
+          height: 70,
+          animationDuration: Duration(milliseconds: 1000),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          indicatorColor: Colors.transparent,
+          // labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          selectedIndex: selectedIndex,
+          onDestinationSelected: (value) {
+            selectedIndex = value;
+            setState(() {});
+          },
+          destinations: const [
+            const NavigationDestination(
+              icon: ImageIcon(
+                AssetImage('images/home_icon.png'),
+                // size: 25,
+                // color: Theme.of(context).primaryColor,
+                color: Color(0xFFFFFFFF),
+              ),
+              selectedIcon: ImageIcon(
+                AssetImage('images/home_icon.png'),
+                semanticLabel: 'Home',
+                // size: 25,
+                color: Color(0xFFFFBB3B),
+              ),
+              label: 'Home',
             ),
-          ),
-        );
-      },
-    );
+            const NavigationDestination(
+              icon: ImageIcon(
+                AssetImage('images/search_icon.png'),
+                // size: 25,
+                // color: Theme.of(context).primaryColor,
+                color: Color(0xFFFFFFFF),
+              ),
+              selectedIcon: ImageIcon(
+                AssetImage('images/search_icon.png'),
+                // size: 25,
+                color: Color(0xFFFFBB3B),
+              ),
+              label: 'Search',
+            ),
+            const NavigationDestination(
+              icon: ImageIcon(
+                AssetImage('images/brows_icon.png'),
+                // size: 25,
+                color: Color(0xFFFFFFFF),
+              ),
+              selectedIcon: ImageIcon(
+                AssetImage('images/browse_icon.png'),
+                color: Color(0xFFFFBB3B),
+
+                // size: 25,
+                // color: Color(0xFFADADAD),
+              ),
+              label: 'Brows',
+            ),
+            const NavigationDestination(
+              icon: ImageIcon(
+                AssetImage('images/watchlist_icon.png'),
+                // size: 25,
+                // color: Theme.of(context).primaryColor,
+                color: Color(0xFFFFFFFF),
+              ),
+              selectedIcon: ImageIcon(
+                AssetImage('images/watchlist_icon.png'),
+                color: Color(0xFFFFBB3B),
+
+                // size: 25,
+                // color: Theme.of(context).primaryColor,
+              ),
+              label: 'Watchlist',
+            ),
+          ],
+        ));
   }
 }

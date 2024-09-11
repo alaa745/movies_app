@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/domain/models/dtos/genre_list_dto.dart';
+import 'package:movies_app/domain/models/dtos/result_dto.dart';
 import 'package:movies_app/presentation/component/poster_card_vertical.dart';
 
 class PopularMoviePoster extends StatelessWidget {
-  String posterPath, title, releaseDate, coverPath;
-  double avgRating;
-  PopularMoviePoster(
-      {required this.avgRating,
-      required this.posterPath,
-      required this.releaseDate,
-      required this.coverPath,
-      required this.title});
+  MovieResultDto movieResultDto;
+  GenreListDto genreListDto;
+  PopularMoviePoster({
+    required this.movieResultDto,
+    required this.genreListDto,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Image.network(
-          'https://image.tmdb.org/t/p/w500/$coverPath',
+          'https://image.tmdb.org/t/p/w500/${movieResultDto.backdropPath}',
           width: MediaQuery.sizeOf(context).width,
           height: 225,
           fit: BoxFit.cover,
@@ -27,7 +27,10 @@ class PopularMoviePoster extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             // mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              PosterCardVertical(imagePath: posterPath),
+              PosterCardVertical(
+                movieResultDto: movieResultDto,
+                genreListDto: genreListDto,
+              ),
               Container(
                 margin: EdgeInsets.only(
                     bottom: MediaQuery.sizeOf(context).height * .02, left: 12),
@@ -41,7 +44,7 @@ class PopularMoviePoster extends StatelessWidget {
                       //             .035,
                       //     left: 12),
                       child: Text(
-                        title,
+                        '${movieResultDto.title}',
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
@@ -52,7 +55,7 @@ class PopularMoviePoster extends StatelessWidget {
                       //             .035,
                       //     left: 12),
                       child: Text(
-                        '$releaseDate $avgRating',
+                        '${movieResultDto.releaseDate} ${movieResultDto.voteAverage}',
                         style:
                             TextStyle(color: Color(0xFFB5B4B4), fontSize: 12),
                       ),
