@@ -5,4 +5,6 @@ abstract class MoviesDatasource {
   Future<MoviesResponseDto> getNowPlayingMovies();
   Future<MoviesResponseDto> getTopRatedMovies();
   Future<MoviesResponseDto> getMoreLikeThis(int movieId);
+  Future<MoviesResponseDto> searchMovie(String movieQuery);
+
 }

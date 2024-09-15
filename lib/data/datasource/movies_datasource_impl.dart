@@ -34,4 +34,11 @@ class MoviesDatasourceImpl implements MoviesDatasource {
 
     return response.toDto();
   }
+
+  @override
+  Future<MoviesResponseDto> searchMovie(String movieQuery) async {
+    var response = await apiManager.searchMovie(movieQuery);
+
+    return response.toDto();
+  }
 }

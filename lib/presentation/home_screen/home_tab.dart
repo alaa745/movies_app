@@ -258,11 +258,12 @@ class _HomeTabState extends State<HomeTab> {
                                 )
                               : ListView.builder(
                                   itemCount: topRatedMoviesList?.length,
-                                  padding: EdgeInsets.only(left: 10, right: 20),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 20),
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) => Container(
                                     margin:
-                                        EdgeInsets.only(right: 10, bottom: 10),
+                                        EdgeInsets.only(bottom: 5, right: 10),
                                     child: TopRatedCard(
                                       // height: 170,
                                       // iconWidth: 20,

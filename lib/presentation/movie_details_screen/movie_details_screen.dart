@@ -196,7 +196,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               margin: EdgeInsets.only(bottom: 13),
                               child: Text(
                                 '${movieResultDto.overview}',
-                                textAlign: TextAlign.justify,
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
                                   color: Color(0xFFCBCBCB),
                                   fontSize: 15,

@@ -27,4 +27,9 @@ class MoviesRepositoryImpl implements MoviesRepository {
   Future<MoviesResponseDto> getMoreLikeThis(int movieId) {
     return dataSource.getMoreLikeThis(movieId);
   }
+
+  @override
+  Future<MoviesResponseDto> searchMovie(String movieQuery) {
+    return dataSource.searchMovie(movieQuery);
+  }
 }
