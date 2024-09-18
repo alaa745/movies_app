@@ -41,4 +41,11 @@ class MoviesDatasourceImpl implements MoviesDatasource {
 
     return response.toDto();
   }
+
+  @override
+  Future<MoviesResponseDto> filterMovieCategory(String genreId) async {
+    var response = await apiManager.filterMovieCategory(genreId);
+
+    return response.toDto();
+  }
 }

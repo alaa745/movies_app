@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movies_app/presentation/browse_tab/browse_tab.dart';
 import 'package:movies_app/presentation/home_screen/home_tab.dart';
 import 'package:movies_app/presentation/search_tab/search_tab.dart';
 
@@ -15,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var selectedIndex = 0;
   var isSelected = false, isAddSelected = false;
-  var tabs = [HomeTab(), SearchTab()];
+  var tabs = [HomeTab(), SearchTab(), BrowseTab()];
   @override
   Widget build(BuildContext context) {
     // args = ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;
@@ -76,13 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Color(0xFFFFFFFF),
               ),
               selectedIcon: ImageIcon(
-                AssetImage('images/browse_icon.png'),
+                AssetImage('images/brows_icon.png'),
                 color: Color(0xFFFFBB3B),
 
                 // size: 25,
                 // color: Color(0xFFADADAD),
               ),
-              label: 'Brows',
+              label: 'Browse',
             ),
             const NavigationDestination(
               icon: ImageIcon(

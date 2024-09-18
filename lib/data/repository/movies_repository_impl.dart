@@ -32,4 +32,9 @@ class MoviesRepositoryImpl implements MoviesRepository {
   Future<MoviesResponseDto> searchMovie(String movieQuery) {
     return dataSource.searchMovie(movieQuery);
   }
+
+  @override
+  Future<MoviesResponseDto> filterMovieCategory(String genreId) {
+    return dataSource.filterMovieCategory(genreId);
+  }
 }
