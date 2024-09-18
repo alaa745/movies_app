@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/presentation/browse_tab/browse_tab_result_screen.dart';
 import 'package:movies_app/presentation/home_screen/home_screen.dart';
 import 'package:movies_app/presentation/home_screen/home_tab.dart';
 import 'package:movies_app/presentation/movie_details_screen/movie_details_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           SplashScreen.routeName: (context) => SplashScreen(),
           HomeScreen.routeName: (context) => HomeScreen(),
           MovieDetailsScreen.routeName: (context) => MovieDetailsScreen(),
+          BrowseTabResultScreen.routeName: (context) => BrowseTabResultScreen()
         });
   }
 }

@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/domain/models/dtos/genre_list_dto.dart';
 import 'package:movies_app/domain/models/dtos/result_dto.dart';
 import 'package:movies_app/presentation/component/search_card.dart';
+import 'package:movies_app/presentation/home_screen/home_screen_arguments.dart';
+import 'package:movies_app/presentation/search_tab/search_tab_arguments.dart';
 import 'package:movies_app/presentation/search_tab/search_tab_viewmodel.dart';
 import 'package:movies_app/presentation/utils/dialog_utils.dart';
 
@@ -19,11 +22,21 @@ class _SearchTabState extends State<SearchTab> {
   bool isLoading = true;
   List<MovieResultDto> searchedMovies = [];
   late SearchTabViewmodel viewmodel;
+  late HomeScreenArguments args;
+  late GenreListDto genreList;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     viewmodel = SearchTabViewmodel();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    args = ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;
+    genreList = args.genreListDto;
   }
 
   @override
@@ -112,7 +125,9 @@ class _SearchTabState extends State<SearchTab> {
                             itemCount: searchedMovies.length,
                             itemBuilder: (context, index) {
                               return SearchCard(
-                                  movieResultDto: searchedMovies[index]);
+                                movieResultDto: searchedMovies[index],
+                                genreList: genreList,
+                              );
                             },
                           ),
                         ),

@@ -6,5 +6,5 @@ abstract class MoviesRepository {
   Future<MoviesResponseDto> getTopRatedMovies();
   Future<MoviesResponseDto> getMoreLikeThis(int movieId);
   Future<MoviesResponseDto> searchMovie(String movieQuery);
-
+  Future<MoviesResponseDto> filterMovieCategory(String genreId);
 }

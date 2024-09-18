@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/domain/models/dtos/genre_list_dto.dart';
 import 'package:movies_app/domain/models/dtos/result_dto.dart';
 import 'package:movies_app/presentation/movie_details_screen/movie_details_screen.dart';
 import 'package:movies_app/presentation/movie_details_screen/movie_details_screen_arguments.dart';
 
 class SearchCard extends StatelessWidget {
   MovieResultDto movieResultDto;
-  SearchCard({required this.movieResultDto});
+  GenreListDto genreList;
+  SearchCard({required this.movieResultDto, required this.genreList});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,10 @@ class SearchCard extends StatelessWidget {
       onTap: () => Navigator.pushNamed(
         context,
         MovieDetailsScreen.routeName,
-        arguments: MovieDetailsScreenArguments(movieResultDto: movieResultDto),
+        arguments: MovieDetailsScreenArguments(
+          movieResultDto: movieResultDto,
+          genreListDto: genreList,
+        ),
       ),
       child: Container(
         padding: EdgeInsets.all(10),

@@ -176,4 +176,33 @@ class ApiManager {
       throw ServerErrorException(errorMessage: e.toString());
     }
   }
+
+    Future<MovieResponse> filterMovieCategory(String genreId) async {
+    late Response response;
+    try {
+      var url = Uri.https(
+        baseUrl,
+        '/3/discover/movie',
+        {
+          'language': 'en-US',
+          'page': '1',
+          'with_genres': genreId,
+        },
+      );
+      response = await client.get(url, headers: {
+        'Authorization': Constant.apiKey,
+      });
+      var searchResponse = MovieResponse.fromJson(response.body);
+      if (searchResponse.success == false) {
+        throw ServerErrorException(
+            errorMessage: searchResponse.statusMessage!,
+            statusCode: searchResponse.statusCode);
+      }
+      return searchResponse;
+    } on ServerErrorException catch (e) {
+      throw ServerErrorException(errorMessage: e.errorMessage);
+    } on Exception catch (e) {
+      throw ServerErrorException(errorMessage: e.toString());
+    }
+  }
 }
