@@ -1,4 +1,5 @@
 import 'package:movies_app/domain/models/dtos/movies_response_dto.dart';
+import 'package:movies_app/domain/models/dtos/result_dto.dart';
 
 abstract class MoviesRepository {
   Future<MoviesResponseDto> getPopularMovies();
@@ -7,4 +8,8 @@ abstract class MoviesRepository {
   Future<MoviesResponseDto> getMoreLikeThis(int movieId);
   Future<MoviesResponseDto> searchMovie(String movieQuery);
   Future<MoviesResponseDto> filterMovieCategory(String genreId);
+  Future<void> insertMovie(MovieResultDto movie);
+  Future<void> deleteMovie(int id);
+
+  Future<List<MovieResultDto>> getMovies();
 }

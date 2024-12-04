@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/presentation/browse_tab/browse_tab.dart';
 import 'package:movies_app/presentation/home_screen/home_tab.dart';
 import 'package:movies_app/presentation/search_tab/search_tab.dart';
+import 'package:movies_app/presentation/watch_list_screen/watch_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'Home';
@@ -16,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var selectedIndex = 0;
   var isSelected = false, isAddSelected = false;
-  var tabs = [HomeTab(), SearchTab(), BrowseTab()];
+  var tabs = [HomeTab(), SearchTab(), BrowseTab() , WatchListTab()];
   @override
   Widget build(BuildContext context) {
     // args = ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;

@@ -20,7 +20,7 @@ class MovieDetailsViewmodel extends Cubit<MovieDetailsViewState> {
   MovieDetailsViewmodel() : super(MovieDetailsInitialState()) {
     apiManager = ApiManager();
     moviesDatasource = MoviesDatasourceImpl(apiManager);
-    moviesRepository = MoviesRepositoryImpl(moviesDatasource);
+    moviesRepository = MoviesRepositoryImpl(dataSource:  moviesDatasource);
     usecase = GetMoreLikeThisUsecase(repository: moviesRepository);
   }
 
