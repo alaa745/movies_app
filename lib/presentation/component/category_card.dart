@@ -10,7 +10,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       overlayColor: WidgetStatePropertyAll(Colors.transparent),
-      onTap: () => onTap(genreDto.id.toString()),
+      onTap: () => onTap(genreDto.id.toString(), genreDto.name),
       child: Container(
         margin: EdgeInsets.only(right: 13),
         child: Stack(

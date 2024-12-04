@@ -14,6 +14,7 @@ class _BrowseTabResultScreenState extends State<BrowseTabResultScreen> {
   late List<MovieResultDto> moviesList;
   late BrowseTabArguments arguments;
   late GenreListDto genreList;
+  late String genreName;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -22,40 +23,25 @@ class _BrowseTabResultScreenState extends State<BrowseTabResultScreen> {
         ModalRoute.of(context)!.settings.arguments as BrowseTabArguments;
     moviesList = arguments.moviesList;
     genreList = arguments.genreList;
+    genreName = arguments.genreName;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
+        centerTitle: true,
+        title: Text(
+          genreName,
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // Container(
-            //   padding: EdgeInsets.only(left: 20.0, right: 20),
-            //   margin: EdgeInsets.only(top: 15),
-            //   child: Column(
-            //     children: [
-            //       SearchBar(
-            //         backgroundColor: const WidgetStatePropertyAll(
-            //           Color(0xFF514F4F),
-            //         ),
-            //         side: const WidgetStatePropertyAll(
-            //           BorderSide(color: Colors.white),
-            //         ),
-            //         textStyle: const WidgetStatePropertyAll(TextStyle(
-            //           color: Colors.white,
-            //         )),
-            //         leading: const Icon(
-            //           Icons.search_rounded,
-            //           color: Colors.white,
-            //         ),
-            //         onSubmitted: (value) {
-            //           viewmodel.searchMovie(value);
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
             moviesList.isNotEmpty
                 ? Expanded(
                     child: Container(

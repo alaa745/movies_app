@@ -4,9 +4,14 @@ import 'package:movies_app/presentation/home_screen/home_screen.dart';
 import 'package:movies_app/presentation/home_screen/home_tab.dart';
 import 'package:movies_app/presentation/movie_details_screen/movie_details_screen.dart';
 import 'package:movies_app/presentation/splash_screen/splash_screen.dart';
+import 'package:movies_app/presentation/watch_list_screen/watch_list_tab_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => WatchListTabViewmodel())],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

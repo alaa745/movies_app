@@ -21,7 +21,7 @@ class HomeScreenViewmodel extends Cubit<HomeViewState> {
   HomeScreenViewmodel() : super(HomeInitialState()) {
     apiManager = ApiManager();
     moviesDatasource = MoviesDatasourceImpl(apiManager);
-    moviesRepository = MoviesRepositoryImpl(moviesDatasource);
+    moviesRepository = MoviesRepositoryImpl(dataSource:  moviesDatasource);
     usecase = GetPopularMoviesUsecase(repository: moviesRepository);
     _nowPlayingUsecase = GetNowPlayingUsecase(repository: moviesRepository);
     _topRatedMoviesUsecase = GetTopRatedMoviesUsecase(moviesRepository);

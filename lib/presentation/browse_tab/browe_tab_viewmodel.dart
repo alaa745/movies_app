@@ -19,7 +19,7 @@ class BrowseTabViewmodel extends Cubit<BrowseTabViewState> {
   BrowseTabViewmodel() : super(BrowseTabInitialState()) {
     apiManager = ApiManager();
     moviesDatasource = MoviesDatasourceImpl(apiManager);
-    moviesRepository = MoviesRepositoryImpl(moviesDatasource);
+    moviesRepository = MoviesRepositoryImpl(dataSource:  moviesDatasource);
     usecase = FilterMovieWithGenreUsecase(moviesRepository);
   }
 

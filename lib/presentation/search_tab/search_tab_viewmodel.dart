@@ -18,7 +18,7 @@ class SearchTabViewmodel extends Cubit<SearchTabViewState> {
   SearchTabViewmodel() : super(SearchTabInitialState()) {
     apiManager = ApiManager();
     moviesDatasource = MoviesDatasourceImpl(apiManager);
-    moviesRepository = MoviesRepositoryImpl(moviesDatasource);
+    moviesRepository = MoviesRepositoryImpl(dataSource: moviesDatasource);
     usecase = SearchMovieUsecase(moviesRepository);
   }
 

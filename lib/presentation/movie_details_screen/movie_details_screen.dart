@@ -287,6 +287,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   void getGenre() {
+    filteredGenreList?.clear();
     print('object');
     print('genres $categoriesList');
     for (var genre in genreIds!) {

@@ -19,7 +19,8 @@ class BrowseTab extends StatefulWidget {
 
 class _BrowseTabState extends State<BrowseTab> {
   late BrowseTabViewmodel viewmodel;
-  bool isLoading = true;
+  bool isLoading = false;
+  late String genreName;
   @override
   void initState() {
     // TODO: implement initState
@@ -50,9 +51,7 @@ class _BrowseTabState extends State<BrowseTab> {
         if (state is BrowseTabLoadingState) {
           print('successsss');
           isLoading = true;
-          CircularProgressIndicator(
-            strokeWidth: 20,
-          );
+          setState(() {});
         } else if (state is BrowseTabFailState) {
           print('status code ${state.statusCode}');
           if (Platform.isIOS) {
@@ -83,15 +82,22 @@ class _BrowseTabState extends State<BrowseTab> {
             Navigator.pushNamed(
               context,
               BrowseTabResultScreen.routeName,
-              arguments: BrowseTabArguments(
-                state.moviesList,
-                genreList,
-              ),
+              arguments:
+                  BrowseTabArguments(state.moviesList, genreList, genreName),
             );
           });
         }
       },
       builder: (context, state) {
+        if (state is BrowseTabLoadingState) {
+          print('loadddd');
+          Center(
+            child: const CircularProgressIndicator(
+              strokeWidth: 20,
+              color: Colors.amber,
+            ),
+          );
+        }
         return Scaffold(
           body: SafeArea(
             child: Padding(
@@ -120,8 +126,11 @@ class _BrowseTabState extends State<BrowseTab> {
                       ),
                       itemBuilder: (context, index) => CategoryCard(
                         genreDto: genreList.genres![index],
-                        onTap: (genreId) {
+                        onTap: (genreId, genreName) {
                           viewmodel.filterMovieWithGenre(genreId);
+                          setState(() {
+                            this.genreName = genreName;
+                          });
                         },
                       ),
                     ),
