@@ -23,6 +23,8 @@ class WatchListTabViewmodel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool _isError = false;
   bool get isError => _isError;
+  bool _isFavorite = false;
+  bool get isFavorite => _isFavorite;
   WatchListTabViewmodel() {
     databaseHelper = DatabaseHelper();
     localDatasource = LocalDatasource(databaseHelper);
@@ -32,7 +34,8 @@ class WatchListTabViewmodel extends ChangeNotifier {
         GetMoviesFromDatabaseUsecase(moviesRepository);
     insertMovieUsecase = InsertMovieUsecase(moviesRepository);
     deleteMovieUsecase = DeleteMovieUsecase(moviesRepository);
-    getMovies();
+    // getMovies();
+    print("aaa");
   }
 
   Future<void> getMovies() async {
@@ -45,29 +48,51 @@ class WatchListTabViewmodel extends ChangeNotifier {
     } catch (e) {
       _isError = true;
     } finally {
+      print("heyy");
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> insertMovie(MovieResultDto movie) async {
-    try {
-      await insertMovieUsecase.invoke(movie);
-      await getMovies();
-    } catch (e) {
-      print('errorrrr');
-      throw DatabaseCustomException(e.toString());
-    }
+  bool isThisFavorite(int id) {
+    getMoviesFromDatabaseUsecase.invoke().then((movies) => {
+          _movies = movies,
+        });
+
+    return _movies.any((movie) => movie.id == id);
+  }
+
+  Future<void> isFavoriteMovie(int id) async {
+    _movies = await getMoviesFromDatabaseUsecase.invoke();
+
+    _isFavorite = _movies.any((movie) => movie.id == id);
     notifyListeners();
   }
 
-  Future<void> deleteMovie(int id) async {
+  Future<void> insertMovie(MovieResultDto movie) async {
+    print("insert");
     try {
-      await deleteMovieUsecase.invoke(id);
-      await getMovies();
+      await insertMovieUsecase.invoke(movie);
+      // await getMovies();
     } catch (e) {
       print('errorrrr');
       throw DatabaseCustomException(e.toString());
+    } finally {
+      isFavoriteMovie(movie.id!);
+    }
+    // notifyListeners();
+  }
+
+  Future<void> deleteMovie(int id) async {
+    print("delete");
+    try {
+      await deleteMovieUsecase.invoke(id);
+      // await getMovies();
+    } catch (e) {
+      print('errorrrr');
+      throw DatabaseCustomException(e.toString());
+    } finally {
+      isFavoriteMovie(id);
     }
     notifyListeners();
   }

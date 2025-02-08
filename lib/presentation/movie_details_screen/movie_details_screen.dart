@@ -192,7 +192,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           children: [
                             Container(
                               height: 150,
-                              width: 275,
+                              width: 230,
                               margin: EdgeInsets.only(bottom: 13),
                               child: Text(
                                 '${movieResultDto.overview}',

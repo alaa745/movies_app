@@ -17,7 +17,7 @@ class _BrowseTabResultScreenState extends State<WatchListTab> {
   List<MovieResultDto> filteredMoviesList = [];
   late HomeScreenArguments arguments;
   late GenreListDto genreList;
-  late WatchListTabViewmodel viewmodel;
+  // late WatchListTabViewmodel viewmodel;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -25,27 +25,23 @@ class _BrowseTabResultScreenState extends State<WatchListTab> {
     arguments =
         ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;
     genreList = arguments.genreListDto;
+
+    // _fetchMovies();
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    viewmodel = Provider.of<WatchListTabViewmodel>(context, listen: false);
     // viewmodel.getMovies();
-    _fetchMovies();
-  }
-
-  void _fetchMovies() async {
-    await viewmodel.getMovies();
-    setState(() {
-      moviesList = viewmodel.movies;
-      filteredMoviesList.addAll(moviesList);
-    });
+    filteredMoviesList.addAll(
+        Provider.of<WatchListTabViewmodel>(context, listen: false).movies);
   }
 
   @override
   Widget build(BuildContext context) {
+    // viewmodel.getMovies();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -73,7 +69,10 @@ class _BrowseTabResultScreenState extends State<WatchListTab> {
                       filteredMoviesList.clear();
                       if (value.trim().isNotEmpty) {
                         print('not');
-                        filteredMoviesList = moviesList
+                        filteredMoviesList = Provider.of<WatchListTabViewmodel>(
+                                context,
+                                listen: false)
+                            .movies
                             .where((movie) => movie.title!
                                 .toLowerCase()
                                 .contains(value.toLowerCase()))
@@ -88,7 +87,10 @@ class _BrowseTabResultScreenState extends State<WatchListTab> {
                         //   }
                         // }
                       } else {
-                        filteredMoviesList.addAll(viewmodel.movies);
+                        filteredMoviesList.addAll(
+                            Provider.of<WatchListTabViewmodel>(context,
+                                    listen: false)
+                                .movies);
                       }
                       setState(() {});
                       // viewmodel.searchMovie(value);

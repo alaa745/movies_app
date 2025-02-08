@@ -88,7 +88,7 @@ class _SearchCardState extends State<SearchCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    width: 240,
+                    width: 185,
                     child: Text(
                       widget.movieResultDto.title!,
                       overflow: TextOverflow.ellipsis,

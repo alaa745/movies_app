@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => WatchListTabViewmodel())],
+    providers: [
+      ChangeNotifierProvider(create: (context) => WatchListTabViewmodel())
+    ],
     child: MyApp(),
   ));
 }
